@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.Scanner;
 
-public class Main {
+public class CiclistasPais {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -13,11 +13,11 @@ public class Main {
 
         try(Connection conn = DriverManager.getConnection(url, usuario, password)){
 
-            System.out.println("Desea filtrar por pais? (Si/No)");
+            System.out.println("Desea filtrar por pais? (Si/No)"); //preguntamos si desea filtrar por pais
             String respuesta = sc.nextLine();
 
-            if(respuesta.equalsIgnoreCase("si")) {
-
+            if(respuesta.equalsIgnoreCase("si")) { //ignoramos mayusculas
+ 
                 System.out.println("¿Que pais del equipo desea filtrar?");
                 String pais = sc.nextLine();
 
@@ -26,10 +26,12 @@ public class Main {
                         "WHERE NACIONALIDAD = ?";
 
                 PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, pais);
+                stmt.setString(1, pais); //añadimos el pais
 
                 ResultSet rs = stmt.executeQuery();
 
+                //mostramos el ciclista por pais
+                
                 while (rs.next()) {
                     int id = rs.getInt("ID_CICLISTA");
                     String Cnombre = rs.getString("NOMBRE_CICLISTA");
@@ -46,7 +48,9 @@ public class Main {
                     System.out.print("");
                     System.out.println("--------------------------------------");
                 }
-            }else{
+            }else{ 
+
+                //lo mismo sin el where = pais
                 String sql = "SELECT CICLISTA.ID_CICLISTA, CICLISTA.NOMBRE AS NOMBRE_CICLISTA, CICLISTA.NACIONALIDAD, CICLISTA.EDAD, EQUIPO.NOMBRE AS NOMBRE_EQUIPO " +
                         "FROM CICLISTA JOIN EQUIPO ON CICLISTA.ID_EQUIPO = EQUIPO.ID_EQUIPO";
 
@@ -54,6 +58,8 @@ public class Main {
 
                 ResultSet rs = stmt.executeQuery();
 
+
+                //mostramos los ciclistas
                 while (rs.next()) {
                     int id = rs.getInt("ID_CICLISTA");
                     String Cnombre = rs.getString("NOMBRE_CICLISTA");
